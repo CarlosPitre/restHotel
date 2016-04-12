@@ -12,6 +12,7 @@ class Clientes_model extends CI_Model {
 	{
 		$this->db->insert('clientes', $datos);
 		return true;
+		
 	}
 
 	public function getCliente($cedula=null)
