@@ -1,0 +1,181 @@
+<div ng-controller="clientesController">
+	<br>
+	
+	<div class="row">
+		<div class="row">
+			<div class="col s4">
+				<div class="input-field">
+					<i class="material-icons prefix">search</i>
+					<input id="filtro" type="text" class="validate" ng-model="filtro">
+					<label for="pass">Filtro</label>
+				</div>
+			</div>
+			<div class="col s4">
+				<a class="btn-floating btn-large waves-effect waves-light green" ng-click="nuevo()"><i class="material-icons prefix">add</i></a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col s12">
+				<table class="bordered">
+					<thead>
+						<th>T. Doc</th>
+						<th>Cédula</th>
+						<th>Nombres</th>
+						<th>Apellidos</th>
+						<th>Teléfono</th>
+						<th>Dirección</th>
+						<th>Correo</th>
+						
+						<th>Acciones</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="cliente in Clientes | filter : filtro">
+							<td>{{cliente.tipoDoc}}</td>
+							<td>{{cliente.cedulaCliente}}</td>
+							<td>{{cliente.nombresCliente}}</td>
+							<td>{{cliente.apellidosCliente}}</td>
+							<td>{{cliente.telefonoCliente}}</td>
+							<td>{{cliente.direccionCliente}}</td>
+							<td>{{cliente.correoCliente}}</td>
+							<td>
+								<a href="javascript:;" ng-click="editar(cliente)"><i class ="material-icons">create</i></a>
+								<a href="javascript:;" ng-click="remover(cliente)"><i class ="material-icons">clear</i></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	 <div id="modalClientes" class="modal modal-fixed-footer">
+	 	<form action="" name="frmClientes">
+	 		<div style="text-align: center;">
+	 			<h4>{{title}}</h4>
+	 		</div>
+	 		<div class="modal-content">
+		    	<div class="row">
+		    		<div class="col s4">
+		    			<div class="input-field">
+							<select class="browser-default" ng-model = "Cliente.tipoDoc" required name="tipoDoc"  ng-class="{invalid:!frmClientes.$pristine && frmClientes.tipoDoc.$error.required}">
+						      <option value="" disabled selected>Seleccionar..</option>
+						      <option value="cc">CC</option>
+						      <option value="ce">CE</option>
+						      <option value="pasaporte">Pasaporte</option>
+						    </select>
+						    <label class="active">Tipo Documento</label>
+						    <small><span class="red-text" ng-show="!frmClientes.$pristine && frmClientes.tipoDoc.$error.required">Tipo Documento Es Obligatorio.</span></small>
+						</div>
+		    		</div>
+		    		<div class="col s6">
+		    			<div class="input-field">
+							<input id="cedula" name="cedula" type="text" ng-model="Cliente.cedula" required
+							ng-class="{invalid:!frmClientes.$pristine && frmClientes.cedula.$error.required || frmClientes.cedula.$error.pattern}" ng-pattern="/^[0-9]*$/" ng-minlength="6">
+							<label for="cedula"class = "{{active}}">Cédula</label>
+							<small><span class="red-text" ng-show="!frmClientes.$pristine && frmClientes.cedula.$error.required">Cédula Es Obligatorio.</span></small>
+							<small><span class="red-text" ng-show="!frmClientes.cedula.$pristine && frmClientes.cedula.$error.pattern">Solo Números</span></small>
+							<small><span class="red-text" ng-show="!frmClientes.$pristine && frmClientes.cedula.$error.minlength">Mínimo 6 Caracteres.</span></small>
+						</div>
+		    		</div>
+		    	</div>
+		    	<div class="row">
+		    		<div class="col s6">
+		    			<div class="input-field">
+							<input id="nombres" type="text" name="nombres"  ng-model="Cliente.nombres" required 
+							ng-class="{invalid:!frmClientes.$pristine && frmClientes.nombres.$error.required}">
+							<label for="nombres"class = "{{active}}">Nombres</label>
+							<small><span class="red-text" ng-show="!frmClientes.$pristine && frmClientes.nombres.$error.required">Nombres Es Obligatorio.</span></small>
+						</div>
+		    		</div>
+		    		<div class="col s6">
+		    			<div class="input-field">
+							<input id="apellido" name="apellido" type="text" ng-model="Cliente.apellidos" required ng-class="{invalid:!frmClientes.$pristine && frmClientes.apellido.$error.required}">
+							<label for="apellido"class = "{{active}}">Apellidos</label>
+							<small><span class="red-text" ng-show="!frmClientes.$pristine && frmClientes.apellido.$error.required">Apellidos Es Obligatorio.</span></small>
+						</div>
+		    		</div>
+		    	</div> 
+		    	<div class="row">
+		    		<div class="col s6">
+		    			<div class="input-field">
+							<select class="browser-default" ng-change="loadMunicipios()" ng-model = "Cliente.idDepartamento">
+						      <option value="" disabled selected>Seleccionar..</option>
+						      <option ng-repeat="departamento in Departamentos" value="{{departamento.iddepartamento}}">{{departamento.nombre}}</option>
+						    </select>
+						    <label class="active">Departamento</label>
+						</div>
+		    		</div>
+		    		<div class="col s6">
+		    			<div class="input-field ">
+							<select class="browser-default" ng-model="Cliente.idMunicipio">
+						      <option value="" disabled selected>Seleccionar..</option>
+						      <option ng-repeat="municipio in Municipios" value="{{municipio.idmunicipio}}">{{municipio.nombreMunicipio}}</option>
+						    </select>
+						    <label class="active">Municipio</label>
+						</div>
+		    		</div>
+		    	</div>
+		    	<div class="row">
+		    		<div class="col s6">
+		    			<div class="input-field">
+							<input id="direccion" name="direccion" type="text" ng-model="Cliente.direccion" required ng-class="{invalid:!frmClientes.$pristine && frmClientes.direccion.$error.required}">
+							<label for="direccion"class = "{{active}}">Dirección</label>
+							<small><span class="red-text" ng-show="!frmClientes.$pristine && frmClientes.direccion.$error.required">Dirección Es Obligatorio.</span></small>
+						</div>
+		    		</div>
+		    		<div class="col s6">
+		    			<div class="input-field">
+							<input id="telefono" type="text" name="telefono" ng-model="Cliente.telefono" required ng-class="{invalid:!frmClientes.$pristine && frmClientes.telefono.$error.required || frmClientes.telefono.$error.pattern}" ng-pattern="/^[0-9]*$/" ng-minlength="7">
+							<label for="telefono"class = "{{active}}">Teléfono</label>
+							<small><span class="red-text" ng-show="!frmClientes.$pristine && frmClientes.telefono.$error.required">Teléfono Es Obligatorio.</span></small>
+							<small><span class="red-text" ng-show="!frmClientes.telefono.$pristine && frmClientes.telefono.$error.pattern">Solo Números</span></small>
+							<small><span class="red-text" ng-show="!frmClientes.$pristine && frmClientes.telefono.$error.minlength">Mínimo 7 Caracteres.</span></small>
+						</div>
+		    		</div>	    		
+		    	</div>
+		    	<div class="row">
+		    		<div class="col s6">
+		    			<div class="input-field">
+							<input id="correo" type="email" name="correo" ng-model="Cliente.correo" required ng-class="{invalid:!frmClientes.$pristine && frmClientes.correo.$error.required || frmClientes.correo.$error.email }">
+							<label for="correo" class = "{{active}}">Correo</label>
+							<small><span class="red-text" ng-show="!frmClientes.$pristine && frmClientes.correo.$error.required">Correo Es Obligatorio.</span></small>
+							<small><span class="red-text" ng-show="!frmClientes.correo.$pristine && frmClientes.correo.$error.email">Correo No Valido</span></small>
+						</div>
+		    		</div>	    		
+		    	</div>
+		    	
+		    </div>
+		    <div class="divider"></div>		     
+	        <div class="modal-footer">
+	            <a href="javascript:;" class="modal-action modal-close waves-effect waves-light btn red " style="margin-left:10px;" >Salir</a>
+	            <input type="button" class="waves-effect waves-light btn green" ng-hide="editMode" ng-click="Guardar()" 
+	            ng-disabled="!frmClientes.$valid" value="Guardar">
+	            <input type="button" class="waves-effect waves-light btn green" ng-show="editMode" ng-click="modificar()" 
+	            ng-disabled="!frmClientes.$valid" value="Moficar">
+	        </div>
+
+
+	 	</form>
+	    
+	</div>
+
+	<div class="modal bottom-sheet" id="modalEliminar">
+		<div class="modal-content">
+			<h5>Esta seguro que desea eliminar el registro de <strong>{{Cliente.nombres}} {{Cliente.apellidos}}</strong>?</h5>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:;" class="modal-action modal-close waves-effect waves-light btn green" style="margin-left: 10px;">No</a>
+			<a href="javascript:;" class="waves-effect waves-light btn red" ng-click="eliminar()">Si</a>
+			
+		</div>		
+	</div>
+
+	
+</div>
+
+<script>
+	$(document).ready(function() {
+	    $('select').material_select();
+	});
+	 
+</script>

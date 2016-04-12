@@ -1,0 +1,234 @@
+<div ng-controller="checkOutController">
+	<div id="inicio" ng-hide="esconder">
+		<div class="card">
+			<div class="card-content">
+				<div class="row">
+					<div class="col s4 green-text">
+						<h5>Información Del Cliente</h5>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col s4">
+						<div class="input-field">
+							<i class="material-icons prefix">search</i>
+							<input type="text" id="cedula" ng-model = "Cliente.cedula" ng-blur="loadCliente()">
+							<label for="cedula">Por Favor Digitar la Cédula</label>
+						</div>
+					</div>
+					<div class="col s4">
+						<div class="input-field">
+							<input type="text" id="nombre" ng-model = "Cliente.nombres" readonly="true" >
+							<label for="nombre" class="{{active}}">Nombres</label>
+						</div>
+					</div>
+					<div class="col s4">
+						<div class="input-field">
+							<input type="text" id="apellidos" ng-model = "Cliente.apellidos" readonly="true">
+							<label for="apellidos" class="{{active}}">Apellidos</label>
+						</div>
+					</div>
+					<div class="col s4">
+						<div class="input-field">
+							<input type="text" id="telefono" ng-model = "Cliente.telefono"readonly="true">
+							<label for="telefono" class="{{active}}">Teléfono</label>
+						</div>
+					</div>
+					<div class="col s4">
+						<div class="input-field">
+							<input type="text" id="direccion" ng-model = "Cliente.direccion"readonly="true">
+							<label for="direccion" class="{{active}}">Dirección</label>
+						</div>
+					</div>
+					<div class="col s4">
+						<div class="input-field">
+							<input type="text" id="correo" ng-model = "Cliente.correo"readonly="true">
+							<label for="correo" class="{{active}}">Correo</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="">
+				<div class="">
+					<table class="bordered">
+						<thead>
+							<th>Reserva</th>
+							<th>Fecha Entrada</th>
+							<th>Fecha Salida</th>
+							<th>Estado</th>
+							<th>Valor a Pagar</th>
+							<th>Detalles</th>
+							<th>Check In</th>
+						</thead>
+						<tbody>
+							<tr ng-scroll-repeat="reserva in Reservas" page-size="3" tolerance="100">
+								<td>{{reserva.idReserva}}</td>
+								<td>{{reserva.fechaEntrada}}</td>
+								<td>{{reserva.fechaSalida}}</td>
+								<td>{{reserva.estado}}</td>
+								<td>{{reserva.valorPago|currency}}</td>
+								<td><a href="javascript:;" ng-click="detalles(reserva.idReserva)"><i class="material-icons prefix">search</i></a></td>
+								<td>
+
+									<a ng-if="reserva.estado == 'Ejecución'" href="javascript:;" ng-click="checkIn(reserva)"><i class="material-icons prefix">input</i></a></td>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="checkIn" ng-show="esconder">
+		<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+			<a class="btn-floating btn-large red" ng-click="Guardar()">
+				<i class="large material-icons">save</i>
+			</a>
+		</div>
+		<div class="row">
+			<div class="col s1">
+				<a class="btn  green" ng-click="devolver()">
+					<i class="large material-icons">undo</i>
+				</a>
+			</div>	
+			<div class="green-text center">
+				<h3>Realización del Check Out</h3>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="card green white-text">
+				<div class="center">
+					<h5>Información de Reserva</h5>
+				</div>
+				<div class="card-content">
+					<div class="row">
+						<div class="col s2">
+							<strong>Numero: </strong>							
+							{{Reserva.idReserva}}
+						</div>
+						<div class="col s3">
+							<strong>Fecha Entrada: </strong>
+							{{Reserva.fechaEntrada}}
+						</div>
+						<div class="col s3">
+							<strong>Fecha Salida: </strong>
+							{{Reserva.fechaSalida}}
+						</div>
+						<div class="col s2">
+							<strong>Estado: </strong>
+							{{Reserva.estado}}
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="col s2">
+							<strong>Cédula: </strong> 
+							{{Cliente.cedula}}
+						</div>
+						<div class="col s2">
+							<strong>Nombres: </strong> 
+							{{Cliente.nombres}}
+						</div>
+						<div class="col s3">
+							<strong>Apellidos: </strong> 
+							{{Cliente.apellidos}}
+						</div>
+						<div class="col s4">
+							<strong>Dirección: </strong> 
+							{{Cliente.direccion}}
+						</div>
+					</div>					
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col s8">
+				<div class="card">
+					<div class="card-content">
+						<table>
+							<thead>
+								<th>Documento</th>
+								<th>Nombres</th>
+								<th>Apellidos</th>
+								<th>Teléfono</th>
+								<th>Dirección</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="acompanante in Acompanantes">
+									<td>{{acompanante.documento}}</td>
+									<td>{{acompanante.nombres}}</td>
+									<td>{{acompanante.apellidos}}</td>
+									<td>{{acompanante.telefono}}</td>
+									<td>{{acompanante.direccion}}</td>
+								</tr>
+							</tbody>
+							
+						</table>
+					</div>
+				</div>	
+			</div>
+			<div class="col 4">
+				<div class="card">
+					<div class="card-content">
+						<div class="row">
+							<div class="input-field">
+								<input type="text" ng-model= "Reserva.abono" id="abono" ng-keyup="abonar()">
+								<label for="abono">ABONO</label>
+							</div>						
+						</div>
+						<div class="row red-text">
+							<h5>
+								<strong>Pagar: </strong>
+								{{Total|currency}}
+							</h5>
+						</div>
+						<div class="row red-text">
+							<h5>
+								<strong>Restante: </strong>
+								{{Restante|currency}}
+							</h5>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+	</div>
+	
+	
+
+	<div class="modal modal-fixed-footer" id="modalDetalles">
+		<div class="modal-content">
+			<div class="green-text center">
+				<h3>Detalles de Reserva</h3>
+			</div>
+			<table class="bordered">
+				<thead>
+					<th>Numero</th>
+					<th>Categoría</th>
+					<th>Camas</th>
+					<th>Piso</th>
+					<th>Precio</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="habitacion in Habitaciones">
+						<td>{{habitacion.numeroHabitacion}}</td>
+						<td>{{habitacion.descripcionCategoria}}</td>
+						<td>{{habitacion.camas}}</td>
+						<td>{{habitacion.piso}}</td>
+						<td>{{habitacion.precio | currency}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<a href="javascript:;" class="modal-action modal-close waves-effect waves-light btn red" style="margin-left:10px;">Salir</a>
+		</div>
+	</div>
+</div>

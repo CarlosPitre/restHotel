@@ -1,0 +1,131 @@
+<div ng-controller="habitacionesController">
+	<br>
+	<div class="row">
+		<div class="row">
+			<div class="col s3">
+				<div class="input-field">
+					<i class="material-icons prefix">search</i>
+					<input id="filtro" type="text" class="validate" ng-model="filtroN">
+					<label for="pass">Filtro Numero</label>
+				</div>
+			</div>
+			<div class="col s3">
+				<div class="input-field">
+					<i class="material-icons prefix">search</i>
+					<input id="filtro" type="text" class="validate" ng-model="filtroE">
+					<label for="pass">Filtro Estado</label>
+				</div>
+			</div>
+			<div class="col s3">
+				<div class="input-field">
+					<i class="material-icons prefix">search</i>
+					<input id="filtro" type="text" class="validate" ng-model="filtroC">
+					<label for="pass">Filtro Categoría</label>
+				</div>
+			</div>
+			<div class="col s3">
+				<a class="btn-floating btn-large waves-effect waves-light green" ng-click="nuevo()"><i class="material-icons prefix">add</i></a>
+			</div>
+		</div>
+		<div class="row">
+			<table class="bordered">
+				<thead>
+					<th>Numero</th>
+					<th>Estado</th>
+					<th>Categoría</th>
+					<th>Camas</th>
+					<th>Piso</th>
+					<th>Precio</th>
+					<th>Acciones</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="habitacion in Habitaciones | filter: {numeroHabitacion: filtroN, estadoHabitacion: filtroE, categoria: filtroC}">
+						<td>{{habitacion.numeroHabitacion}}</td>
+						<td>{{habitacion.estadoHabitacion}}</td>
+						<td>{{habitacion.categoria}}</td>
+						<td>{{habitacion.camas}}</td>
+						<td>{{habitacion.piso}}</td>
+						<td>{{habitacion.precio | currency}}</td>
+						<td>
+							<a href="javascript:;" ng-click="editar(habitacion)"><i class ="material-icons">create</i></a>
+							<a href="javascript:;" ng-click="remover(habitacion)"><i class ="material-icons">clear</i></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<div id="modalHabitaciones" class="modal modal-fixed-footer">
+		<form action="" name="frmHabitaciones">
+			<div class="modal-content">
+
+				<div class="row">
+					<div class="col s6">
+						<div class="input-field">
+							<input type="number" id="piso" name="piso" ng-model= "Habitacion.piso" required ng-class="{invalid:!frmHabitaciones.$pristine && frmHabitaciones.piso.$error.required}">
+							<small><span class="red-text" ng-show="!frmHabitaciones.$pristine && frmHabitaciones.piso.$error.required">Obligatorio.</span></small>
+							<label  class="{{active}}">Piso</label>
+						</div>
+					</div>
+					<div class="col s6">
+						<div class="input-field">
+							<select name="categoria" id="categoria" ng-model= "Habitacion.categoria" class="browser-default" required ng-class="{invalid:!frmHabitaciones.$pristine && frmHabitaciones.categoria.$error.required}">
+								<option ng-repeat="categoria in Categorias" value="{{categoria.idCategoria}}">
+									{{categoria.descripcionCategoria}}
+								</option>
+							</select>
+							<small><span class="red-text" ng-show="!frmHabitaciones.$pristine && frmHabitaciones.categoria.$error.required">Obligatorio.</span></small>
+							<label class="active">Categoría</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col s6">
+						<div class="input-field">
+							<input type="number" id="numero" name="numero" ng-model= "Habitacion.numero" required ng-class="{invalid:!frmHabitaciones.$pristine && frmHabitaciones.numero.$error.required}">
+							<small><span class="red-text" ng-show="!frmHabitaciones.$pristine && frmHabitaciones.numero.$error.required">Obligatorio.</span></small>
+							<label class="{{active}}">Numero</label>
+						</div>
+					</div>
+					<div class="col s6">
+						<div class="input-field">
+							<input type="number" id="cama" name="cama" ng-model= "Habitacion.camas" required ng-class="{invalid:!frmHabitaciones.$pristine && frmHabitaciones.cama.$error.required}">
+							<small><span class="red-text" ng-show="!frmHabitaciones.$pristine && frmHabitaciones.cama.$error.required">Obligatorio.</span></small>
+							<label class="{{active}}">Numero de Camas</label>
+						</div>
+					</div>					
+				</div>
+				<div class="row">
+					<div class="col s6">
+						<div class="input-field">
+							<select name="estado" id="estado" ng-model= "Habitacion.estado" class="browser-default">
+								<option value="Disponible">Disponible</option>
+								<option value="Ocupada">Ocupada</option>
+								<option value="No Disponible">No Disponible</option>
+							</select>
+							<small><span class="red-text" ng-show="!frmHabitaciones.$pristine && frmHabitaciones.estado.$error.required">Obligatorio.</span></small>
+							<label class="active">Estado</label>
+						</div>						
+					</div>
+					<div class="col s6">
+						<div class="input-field">
+							<input type="text" id="precio" name="precio" ng-model= "Habitacion.precio" required ng-class="{invalid:!frmHabitaciones.$pristine && frmHabitaciones.precio.$error.required || frmHabitaciones.precio.$error.pattern}" ng-pattern="/^[0-9]*$/">
+							<small><span class="red-text" ng-show="!frmHabitaciones.precio.$pristine && frmHabitaciones.precio.$error.pattern">Solo Números</span></small>
+							<small><span class="red-text" ng-show="!frmHabitaciones.$pristine && frmHabitaciones.precio.$error.required">Obligatorio.</span></small>
+							<label class="{{active}}">Precio</label>
+						</div>
+					</div>
+				</div>
+				
+				
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:;" class="modal-action modal-close waves-effect waves-light btn red" style="margin-left:10px;">Salir</a>
+	            <input type="button" class="waves-effect waves-light btn green" ng-hide="editMode" ng-click="guardar()" 
+	            ng-disabled="!frmHabitaciones.$valid" value="Guardar" >
+	            <a href="javascript:;" class="waves-effect waves-light btn green" ng-show="editMode" ng-click="modificar()">Modificar</a>
+			</div>
+		</form>
+	</div>
+</div>

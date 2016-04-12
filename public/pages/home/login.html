@@ -1,0 +1,48 @@
+<div ng-controller="loginController">
+	<br>
+	<div class="row">
+		<div class="col s12 m8 offset-m2">
+			<div class="row ">
+				<div class="card ">
+					<div class="card-image">
+						<img src="img/background2.jpg">
+						<span class="card-title">Inicio de Sesión</span>
+					</div>
+					<div class="card-content">
+						<div class="row ">
+							<div class="col s8 m8 offset-m2">
+								<div class="row ">
+									<div class="input-field">
+										<i class="material-icons prefix">account_circle</i>
+										<input id="user" type="text" class="validate" ng-model="User" name="user">
+										<label for="user">Usuario</label>
+									</div>					        
+								</div>
+								<div class="row">
+									<div class="input-field">
+										<i class="material-icons prefix">vpn_key</i>
+										<input id="pass" type="password" class="validate" ng-model="Pass" name="password">
+										<label for="pass">Contraseña</label>
+									</div>					        
+								</div>
+							
+								<div class="center">
+									<a href="javascript:;" ng-click="ValidarSesion()" class="btn " >Validar Sesión</a>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					<div class="card-action">
+					<div class="col s6">
+						
+					</div>
+						
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<script src="js/libs/init.js"></script>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="hotelAdmin">
+<head>
+	<meta charset="UTF-8">
+	<title>Sección Administrativa</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+	<link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+	<script src="js/libs/jquery.min.js"></script>
+	<script src="js/libs/angular.js"></script>
+	<script src="js/libs/angular-route.js"></script>
+	<script src="js/libs/materialize.js"></script>  
+	<script src="js/libs/init.js"></script>
+	<script src="js/libs/ng-scroll-repeat.js"></script>
+	<script src="js/scripts/app.js"></script>
+	<script src="js/scripts/appAdmin.js"></script>
+	<script src="js/scripts/controllers/homeController.js"></script>
+	<script src="js/scripts/controllers/checkInController.js"></script>
+	<script src="js/scripts/controllers/reservasController.js"></script>
+	<script src="js/scripts/controllers/habitacionesController.js"></script>
+	<script src="js/scripts/controllers/adminController.js"></script>
+	<script src="js/scripts/controllers/loginController.js"></script>
+	<script src="js/scripts/controllers/checkOutController.js"></script>
+	<script src="js/scripts/services/loginService.js"></script>
+	<script src="js/scripts/controllers/clientesController.js"></script>
+	<script src="js/scripts/services/clienteService.js"></script>
+	<script src="js/scripts/services/habitacionesService.js"></script>
+	<script src="js/scripts/services/reservasService.js"></script>
+</head>
+<body>
+	<div ng-controller="adminController">
+		<header>
+			<div class="navbar-fixed">
+			    <nav class="green darken-2">
+			        <div class="nav-wrapper">
+			            <a style="float:left; margin-left:15px;" onclick="abrirModal()">
+			            	<i class="mdi-navigation-menu"></i>
+			            </a>
+			            <a style="float:left" href="#" class="brand-logo">
+			            	<img style="height:60px;" src="img/logo.png" alt=""/>
+			            </a> 
+			            <ul class="right ">
+					        <li><a class = "white-text" href="javascript:;">{{Usuario}}</a></li>
+					        <li><a class = "white-text" href="javascript:;">Cerrar Sesión</a></li>
+					     </ul>                                               
+			        </div>
+			    </nav>
+			</div>
+		</header>
+		<div>
+			<ul id="slide-out" class="side-nav fixed" style="width: 195px;margin-top: 65px; margin-left: -12px;">
+				<li ng-repeat="menu in Menu">
+					<a href="#/{{menu.url}}/inicio">{{menu.descripcion}}</a>
+				</li>
+			</ul>
+		</div>
+
+		<div ng-view style = "margin-left: 195px;">
+			
+		</div>
+
+	</div>
+	<script>
+		 var abierto;
+         var alto = $(window).height();
+         
+   		 document.getElementById('slide-out').style.height = alto-80 + "px";
+       
+           
+            $(document).ready(function () {
+
+                abierto = true;             
+               
+            });
+            
+            function abrirModal() {
+                if (abierto) {
+
+                    $("#slide-out").animate({"left": "-=190px"}, 300);
+                    $("#container").animate({"padding-left": "-=190px"}, 300);
+                    abierto = false;
+
+                } else {
+                    abierto = true;
+                    $("#slide-out").animate({"left": "+=190px"}, 300);
+                    $("#container").animate({"padding-left": "+=190px"}, 300);
+                }
+            }
+	</script>
+</body>
+</html>
